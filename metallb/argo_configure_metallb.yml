@@ -1,0 +1,39 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: metallb
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: metallb
+  destinations:
+    - namespace: argocd
+      server: 'https://kubernetes.default.svc'
+    - namespace: 'metallb-system'
+      server: 'https://kubernetes.default.svc'
+  sourceRepos:
+    - 'https://github.com/FRUCHTiii/homelab_k3s_argocd.git'
+status: {}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 'metallb'
+  namespace: argocd
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: metallb
+  source:
+    path: metallb
+    repoURL: 'https://github.com/FRUCHTiii/homelab_k3s_argocd.git'
+    targetRevision: 'main'
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
