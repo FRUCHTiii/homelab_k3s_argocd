@@ -1,0 +1,6 @@
+# vim
+.sw[a-z]
+*.sw[a-z]
+
+# ignore OSX meta files
+.DS_Store
