@@ -8,7 +8,7 @@ spec:
   storageClassName: ""
   volumeName: pv-nfs-kubedata-pihole # < The volumename needs correpond with the persistent volume
   accessModes:
-   - ReadWriteOnce
+   - RWM
   resources:
     requests:
       storage: 10Gi
