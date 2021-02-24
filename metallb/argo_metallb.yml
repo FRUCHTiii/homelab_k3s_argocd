@@ -4,7 +4,7 @@ kind: Application
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: '2'
-  name: metallb
+  name: metallb-app
   namespace: argocd
 spec:
   destination:
