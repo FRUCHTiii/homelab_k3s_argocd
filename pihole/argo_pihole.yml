@@ -1,0 +1,23 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '3'
+  name: pihole-app
+  namespace: argocd
+spec:
+  destination:
+    namespace: pihole
+    server: https://kubernetes.default.svc
+  project: pihole
+  source:
+    path: pihole/pihole-app
+    repoURL: https://github.com/FRUCHTiii/homelab_k3s_argocd.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
