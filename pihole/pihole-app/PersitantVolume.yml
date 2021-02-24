@@ -11,7 +11,7 @@ spec:
   capacity:
     storage: 10Gi # < Maximum storage size you want to reserve
   accessModes:
-    - RWM
+    - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   mountOptions:
     - hard
