@@ -30,7 +30,7 @@ spec:
   source:
     path: metallb
     repoURL: 'https://github.com/FRUCHTiii/homelab_k3s_argocd.git'
-    targetRevision: 'HEAD'
+    targetRevision: 'main'
   syncPolicy:
     automated:
       prune: false
