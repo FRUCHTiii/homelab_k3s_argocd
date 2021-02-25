@@ -44,12 +44,7 @@ spec:
         volumeMounts:
         - name: pihole-etc-volume
           mountPath: "/etc/pihole"
-        - name: pihole-dnsmasq-volume
-          mountPath: "/etc/dnsmasq.d"
       volumes:
       - name: pihole-etc-volume
-        persistentVolumeClaim:
-          claimName: pvc-nfs-kubedata-pihole
-      - name: pihole-dnsmasq-volume
         persistentVolumeClaim:
           claimName: pvc-nfs-kubedata-pihole
