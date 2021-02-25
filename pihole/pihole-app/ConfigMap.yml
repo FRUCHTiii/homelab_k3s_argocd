@@ -41,6 +41,6 @@ kind: ConfigMap
 metadata:
   name: pihole-env
 data:
-  TZ:
+  TZ: Europe/Berlin
   DNS1: 127.0.0.1
   DNS2: 1.1.1.1
