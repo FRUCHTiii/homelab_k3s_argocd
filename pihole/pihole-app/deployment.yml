@@ -42,16 +42,14 @@ spec:
               name: pihole-secret
               key: password
         volumeMounts:
-        - name: pihole-adlists
-          mountPath: /etc/pihole/adlists.list
-          subPath: adlists.list
-        - name: pihole-regex
-          mountPath: /etc/pihole/regex.list
-          subPath: regex.list
+        - name: pihole-etc-volume
+          mountPath: "/etc/pihole"
+        - name: pihole-dnsmasq-volume
+          mountPath: "/etc/dnsmasq.d"
       volumes:
-      - name: pihole-adlists
-        configMap:
-          name: pihole-adlists
-      - name: pihole-regex
-        configMap:
-          name: pihole-regex
+      - name: pihole-etc-volume
+        persistentVolumeClaim:
+          claimName: pvc-nfs-kubedata-pihole
+      - name: pihole-dnsmasq-volume
+        persistentVolumeClaim:
+          claimName: pvc-nfs-kubedata-pihole

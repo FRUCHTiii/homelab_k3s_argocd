@@ -7,7 +7,7 @@ metadata:
   labels:
     volume: pihole
 spec:
-  storageClassName: ""
+  storageClassName: "managed-nfs-storage"
   capacity:
     storage: 10Gi # < Maximum storage size you want to reserve
   accessModes:
