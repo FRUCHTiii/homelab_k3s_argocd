@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pv-nfs-kubedata-pihole  # < Name of the persistent volume
+  name: pv-nfs-kubedata-pihole-dnsmasq  # < Name of the persistent volume
   namespace: pihole
   labels:
     volume: pihole
@@ -18,5 +18,5 @@ spec:
     - nfsvers=4.1
   nfs:
     server: 192.168.1.53  # < The ip adress of your NAS (NFS Server)
-    path: "/volume1/kubedata/pihole"  # < The NFS volumename
+    path: "/volume1/kubedata/pihole/dnsmasq"  # < The NFS volumename
     readOnly: false

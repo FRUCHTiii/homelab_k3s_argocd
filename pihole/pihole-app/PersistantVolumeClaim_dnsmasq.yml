@@ -2,11 +2,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-nfs-kubedata-pihole
+  name: pvc-nfs-kubedata-pihole-dnsmasq
   namespace: pihole
 spec:
   storageClassName: "managed-nfs-storage"
-  volumeName: pv-nfs-kubedata-pihole # < The volumename needs correpond with the persistent volume
+  volumeName: pv-nfs-kubedata-pihole-dnsmasq # < The volumename needs correpond with the persistent volume
   accessModes:
    - ReadWriteOnce
   resources:
