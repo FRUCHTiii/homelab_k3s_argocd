@@ -7,6 +7,9 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
   description: nfs-client-provisioner
   destinations:
     - namespace: argocd
