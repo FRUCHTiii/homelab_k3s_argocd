@@ -134,6 +134,8 @@ spec:
                       properties:
                         exclude:
                           type: string
+                        include:
+                          type: string
                         jsonnet:
                           description: ApplicationSourceJsonnet holds jsonnet specific options
                           properties:
@@ -401,6 +403,8 @@ spec:
                   description: Directory holds path/directory specific options
                   properties:
                     exclude:
+                      type: string
+                    include:
                       type: string
                     jsonnet:
                       description: ApplicationSourceJsonnet holds jsonnet specific options
@@ -685,6 +689,8 @@ spec:
                         description: Directory holds path/directory specific options
                         properties:
                           exclude:
+                            type: string
+                          include:
                             type: string
                           jsonnet:
                             description: ApplicationSourceJsonnet holds jsonnet specific options
@@ -973,6 +979,8 @@ spec:
                               properties:
                                 exclude:
                                   type: string
+                                include:
+                                  type: string
                                 jsonnet:
                                   description: ApplicationSourceJsonnet holds jsonnet specific options
                                   properties:
@@ -1238,6 +1246,8 @@ spec:
                           properties:
                             exclude:
                               type: string
+                            include:
+                              type: string
                             jsonnet:
                               description: ApplicationSourceJsonnet holds jsonnet specific options
                               properties:
@@ -1499,6 +1509,8 @@ spec:
                           description: Directory holds path/directory specific options
                           properties:
                             exclude:
+                              type: string
+                            include:
                               type: string
                             jsonnet:
                               description: ApplicationSourceJsonnet holds jsonnet specific options
@@ -2424,18 +2436,11 @@ spec:
       labels:
         app.kubernetes.io/name: argocd-dex-server
     spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/part-of: argocd
-              topologyKey: kubernetes.io/hostname
-            weight: 5
+      nodeSelector:
+        cpuarch: amd64
       containers:
       - command:
-        - /shared/argocd-util
+        - /shared/argocd-dex
         - rundex
         image: ghcr.io/dexidp/dex:v2.27.0
         imagePullPolicy: Always
@@ -2447,13 +2452,18 @@ spec:
         volumeMounts:
         - mountPath: /shared
           name: static-files
+      tolerations:
+      - key: "cpuarch"
+        operator: "Equal"
+        value: "amd64"
+        effect: "NoSchedule"
       initContainers:
       - command:
         - cp
         - -n
-        - /usr/local/bin/argocd-util
-        - /shared
-        image: alinbalutoiu/argocd:linux-arm64-v1.8.5
+        - /usr/local/bin/argocd
+        - /shared/argocd-dex
+        image: quay.io/argoproj/argocd:latest
         imagePullPolicy: Always
         name: copyutil
         volumeMounts:
@@ -2481,21 +2491,8 @@ spec:
       labels:
         app.kubernetes.io/name: argocd-redis
     spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: argocd-redis
-              topologyKey: kubernetes.io/hostname
-            weight: 100
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/part-of: argocd
-              topologyKey: kubernetes.io/hostname
-            weight: 5
+      nodeSelector:
+        cpuarch: amd64
       containers:
       - args:
         - --save
@@ -2507,6 +2504,11 @@ spec:
         name: redis
         ports:
         - containerPort: 6379
+      tolerations:
+      - key: "cpuarch"
+        operator: "Equal"
+        value: "amd64"
+        effect: "NoSchedule"
       securityContext:
         fsGroup: 1000
         runAsGroup: 1000
@@ -2531,21 +2533,8 @@ spec:
       labels:
         app.kubernetes.io/name: argocd-repo-server
     spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: argocd-repo-server
-              topologyKey: kubernetes.io/hostname
-            weight: 100
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/part-of: argocd
-              topologyKey: kubernetes.io/hostname
-            weight: 5
+      nodeSelector:
+        cpuarch: amd64
       automountServiceAccountToken: false
       containers:
       - command:
@@ -2553,7 +2542,7 @@ spec:
         - argocd-repo-server
         - --redis
         - argocd-redis:6379
-        image: alinbalutoiu/argocd:linux-arm64-v1.8.5
+        image: quay.io/argoproj/argocd:latest
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
@@ -2581,6 +2570,11 @@ spec:
           name: gpg-keys
         - mountPath: /app/config/gpg/keys
           name: gpg-keyring
+      tolerations:
+      - key: "cpuarch"
+        operator: "Equal"
+        value: "amd64"
+        effect: "NoSchedule"
       volumes:
       - configMap:
           name: argocd-ssh-known-hosts-cm
@@ -2611,27 +2605,14 @@ spec:
       labels:
         app.kubernetes.io/name: argocd-server
     spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: argocd-server
-              topologyKey: kubernetes.io/hostname
-            weight: 100
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/part-of: argocd
-              topologyKey: kubernetes.io/hostname
-            weight: 5
+      nodeSelector:
+        cpuarch: amd64
       containers:
       - command:
         - argocd-server
         - --staticassets
         - /shared/app
-        image: alinbalutoiu/argocd:linux-arm64-v1.8.5
+        image: quay.io/argoproj/argocd:latest
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -2654,6 +2635,11 @@ spec:
           name: ssh-known-hosts
         - mountPath: /app/config/tls
           name: tls-certs
+      tolerations:
+      - key: "cpuarch"
+        operator: "Equal"
+        value: "amd64"
+        effect: "NoSchedule"
       serviceAccountName: argocd-server
       volumes:
       - emptyDir: {}
@@ -2684,21 +2670,8 @@ spec:
       labels:
         app.kubernetes.io/name: argocd-application-controller
     spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: argocd-application-controller
-              topologyKey: kubernetes.io/hostname
-            weight: 100
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/part-of: argocd
-              topologyKey: kubernetes.io/hostname
-            weight: 5
+      nodeSelector:
+        cpuarch: amd64
       containers:
       - command:
         - argocd-application-controller
@@ -2706,7 +2679,7 @@ spec:
         - "20"
         - --operation-processors
         - "10"
-        image: alinbalutoiu/argocd:linux-arm64-v1.8.5
+        image: quay.io/argoproj/argocd:latest
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -2723,4 +2696,9 @@ spec:
             port: 8082
           initialDelaySeconds: 5
           periodSeconds: 10
+      tolerations:
+      - key: "cpuarch"
+        operator: "Equal"
+        value: "amd64"
+        effect: "NoSchedule"
       serviceAccountName: argocd-application-controller
