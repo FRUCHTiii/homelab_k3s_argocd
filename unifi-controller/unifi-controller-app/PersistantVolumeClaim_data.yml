@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-nfs-kubedata-unifi-data
+  namespace: unifi-controller
+spec:
+  storageClassName: "managed-nfs-storage"
+  volumeName: pv-nfs-kubedata-unifi-data
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      volume: unifi-data
