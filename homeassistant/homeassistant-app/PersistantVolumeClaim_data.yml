@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-nfs-kubedata-homeassistant-data
+  namespace: homeassistant
+spec:
+  storageClassName: "managed-nfs-storage"
+  volumeName: pv-nfs-kubedata-homeassistant-data
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      volume: homeassistant-data
