@@ -36,11 +36,6 @@ spec:
             configMapKeyRef:
               name: pihole-env
               key: DNS2
-        - name: WEBPASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: pihole-secret
-              key: password
         volumeMounts:
         - name: pihole-etc-volume
           mountPath: "/etc/pihole"
