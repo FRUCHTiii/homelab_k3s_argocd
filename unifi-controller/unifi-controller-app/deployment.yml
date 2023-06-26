@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: unifi-controller
-          image: jacobalberty/unifi:v7.3.76
+          image: jacobalberty/unifi:v7.4
           imagePullPolicy: Always
           env:
           - name: TZ
