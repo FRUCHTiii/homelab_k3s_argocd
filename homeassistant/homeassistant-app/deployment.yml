@@ -19,7 +19,7 @@ spec:
       hostNetwork: true
       containers:
         - name: homeassistant
-          image: homeassistant/home-assistant:2023.10
+          image: homeassistant/home-assistant:2024.2.0
           imagePullPolicy: Always
           env:
             - name: TZ
