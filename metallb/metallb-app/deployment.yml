@@ -369,7 +369,7 @@ spec:
       - args:
         - --port=7472
         - --config=config
-        image: bitnami/metallb-controller:0:14:3
+        image: bitnami/metallb-controller:0.14.3
         imagePullPolicy: Always
         name: controller
         ports:
